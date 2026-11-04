@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>HealthDoc</title>
+        <!-- Google font : Montserrat -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <!-- Link to external CSS file -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <!-- Header -->
+         <div>
+            <div>
+                <h1>HealthDoc</h1>
+            </div>
+         </div>
+
+         <!-- Main content -->
+          <main>
+            <div>
+                <h2>Personalized Prevention Portal</h2>
+                <p>Input your genetic history, living environment, and daily nutrition to receive customized medical and lifestyle countermeasures tailored to prevent predicted health conditions.</p>
+
+                <form id="healthForm">
+                    <!-- Genetic -->
+                     <div>
+                        <label>1. Genetic Predispositions / Family History</label>
+                            <div>
+                                <label>
+                                    <input type="checkbox" name="genetics" value="Diabetes">
+                                    <span>Type 2 Diabetes</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="genetics" value="Hypertension">
+                                    <span>Hypertension</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="genetics" value="Cardiovascular">
+                                    <span>Cardiovascular Disease</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="genetics" value="Lactose">
+                                    <span>Lactose Intolerance / GI Sensitivity</span>
+                                </label>
+                            </div>
+                     </div>
+
+                    <!-- Environment -->
+                     <div>
+                        <label>2. Living Environment</label>
+                        <select id="environment">
+                            <option value="Urban">Urban Area (High Pollution / Traffic Exposure)</option>
+                            <option value="Suburban">Suburban Area (Moderate Air Quality)</option>
+                            <option value="Rural">Rural Area (Clean Air / Low Pollution)</option>
+                        </select>
+                     </div>
+
+                     <!-- Nutrition -->
+                      <div>
+                            <label>3. Primary Dietary Pattern</label>
+                            <select id="nutrition">
+                                <option value="Processed">High Sugar / High Processed Foods</option>
+                                <option value="Standard">Standard Mixed Diet</option>
+                                <option value="Mediterranean">Mediterranean / Whole Foods Diet</option>
+                                <option value="PlantBased">Plant-Based / High Fiber</option>
+                            </select>
+                      </div>
+
+                      <button type="button" onclick="calculateRisk()">Generate prevention plan</button>
+                </form>
+            </div>
+
+            <!-- Results Section (Hidden by default) -->
+             <div id="resultsCard">
+                <div>
+                    <h3>Your Personalized Prevention Dashboard</h3>
+                    <span id="riskBadge"></span>
+                </div>
+
+                <div id="recommendationsList">
+                    <!-- Recommendations inserted via JS -->
+                </div>
+             </div>
+          </main>
+
+          <!-- Footer -->
+           <footer>
+            <p>HealthDoc - Built for Preventive Health Research</p>
+           </footer>
+    </body>
+</html>
