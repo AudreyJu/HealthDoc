@@ -131,7 +131,7 @@ select:focus {
 /* Submit Button */
 button[type="button"] {
     width: 100%;
-    color: white;
+    color: var(--secondary-color);
     border: none;
     padding: 1rem 1.5rem;
     font-family: 'Montserrat', sans-serif;
