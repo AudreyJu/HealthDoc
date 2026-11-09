@@ -12,111 +12,138 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <!-- Header -->
-         <div>
-            <div>
-                <h1>HealthDoc</h1>
+        <!-- Header & Navigation Menu -->
+        <header class="navbar">
+            <div class="nav-container">
+                <h1 class="logo">HealthDoc</h1>
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="#" onclick="showPage('homePage')">Home</a></li>
+                        <li><a href="#" onclick="showPage('testPage')">Prevention Test</a></li>
+                        <li><a href="#" onclick="showPage('statsPage')">Results</a></li>
+                    </ul>
+                </nav>
             </div>
-         </div>
+        </header>
 
          <!-- Main content -->
-          <main>
-            <div>
-                <h2>Personalized Prevention Portal</h2>
-                <p>Input your genetic history, living environment, and daily nutrition to receive customized medical and lifestyle countermeasures tailored to prevent predicted health conditions.</p>
+        <main class="main-content">
+            <!-- PAGE 1: HOME PAGE -->
+            <section id="homePage" class="page-section">
+                <div class="hero-card">
+                    <h2>Welcome to HealthDoc</h2>
+                    <p class="tagline">Prevent medical conditions before they start by aligning your genetics, environment, and lifestyle choices.</p>
+                    
+                    <div class="mission-box">
+                        <h3>Our Mission</h3>
+                        <p>HealthDoc shifts medicine from reactive treatment to proactive prevention. By evaluating how your living conditions, daily nutrition, physical activity, and family history intersect, we provide personalized countermeasures to protect your long-term health.</p>
+                    </div>
 
-                <form id="healthForm">
-                    <!-- Genetic -->
-                     <div>
-                        <label>1. Genetic Predispositions / Family History</label>
-                            <div>
-                                <label>
-                                    <input type="checkbox" name="genetics" value="Diabetes">
-                                    <span>Type 2 Diabetes</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="genetics" value="Hypertension">
-                                    <span>Hypertension</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="genetics" value="Cardiovascular">
-                                    <span>Cardiovascular Disease</span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="genetics" value="Lactose">
-                                    <span>Lactose Intolerance / GI Sensitivity</span>
-                                </label>
-                            </div>
-                     </div>
+                    <button type="button" class="btn-primary" onclick="showPage('testPage')">Start Prevention Assessment &rarr;</button>
+                </div>
+            </section>
 
-                    <!-- Environment -->
-                     <div>
-                        <label>2. Living Environment</label>
-                        <select id="environment">
-                            <option value="Urban">Urban Area (High Pollution / Traffic Exposure)</option>
-                            <option value="Suburban">Suburban Area (Moderate Air Quality)</option>
-                            <option value="Rural">Rural Area (Clean Air / Low Pollution)</option>
-                        </select>
-                     </div>
-
-                     <!-- Nutrition -->
-                      <div>
-                            <label>3. Primary Dietary Pattern</label>
-                            <select id="nutrition">
-                                <option value="Processed">High Sugar / High Processed Foods</option>
-                                <option value="Standard">Standard Mixed Diet</option>
-                                <option value="Mediterranean">Mediterranean / Whole Foods Diet</option>
-                                <option value="PlantBased">Plant-Based / High Fiber</option>
-                            </select>
-                      </div>
-
-                      <!-- Age -->
-                        <div>
-                            <label>4. Age</label>
-                            <input type="number" id="age" min="1" max="120" placeholder="Enter your age">
-                        </div>
-
-                        <!-- Smoking -->
-                        <div>
-                            <label>5. Do you smoke?</label>
-                            <select id="smoking">
-                                <option value="No">No</option>
-                                <option value="Occasionally">Occasionally</option>
-                                <option value="Regularly">Regularly</option>
-                            </select>
-                        </div>
-
-                        <!-- Physical activity -->
-                        <div>
-                            <label>6. Physical Activity</label>
-                            <select id="activity">
-                                <option value="Low">Low (less than 1 hour per week)</option>
-                                <option value="Moderate">Moderate (1 to 3 hours per week)</option>
-                                <option value="High">High (more than 3 hours per week)</option>
-                            </select>
-                        </div>
-
-                      <button type="button" onclick="calculateRisk()">Generate prevention plan</button>
-                </form>
-            </div>
-
-            <!-- Results Section (Hidden by default) -->
-             <div id="resultsCard" class="hidden">
+            <!-- PAGE 2: PREVENTION TEST -->
+            <section id="testPage" class="page-section hidden">
                 <div>
-                    <h3>Your Personalized Prevention Dashboard</h3>
-                    <span id="riskBadge"></span>
+                    <h2>Personalized Prevention Portal</h2>
+                    <p>Input your genetic history, living environment, and daily nutrition to receive customized medical and lifestyle countermeasures tailored to prevent predicted health conditions.</p>
+
+                    <form id="healthForm">
+                        <!-- Genetic -->
+                        <div>
+                            <label>1. Genetic Predispositions / Family History</label>
+                                <div>
+                                    <label>
+                                        <input type="checkbox" name="genetics" value="Diabetes">
+                                        <span>Type 2 Diabetes</span>
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="genetics" value="Hypertension">
+                                        <span>Hypertension</span>
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="genetics" value="Cardiovascular">
+                                        <span>Cardiovascular Disease</span>
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="genetics" value="Lactose">
+                                        <span>Lactose Intolerance / GI Sensitivity</span>
+                                    </label>
+                                </div>
+                        </div>
+
+                        <!-- Environment -->
+                        <div>
+                            <label>2. Living Environment</label>
+                            <select id="environment">
+                                <option value="Urban">Urban Area (High Pollution / Traffic Exposure)</option>
+                                <option value="Suburban">Suburban Area (Moderate Air Quality)</option>
+                                <option value="Rural">Rural Area (Clean Air / Low Pollution)</option>
+                            </select>
+                        </div>
+
+                        <!-- Nutrition -->
+                        <div>
+                                <label>3. Primary Dietary Pattern</label>
+                                <select id="nutrition">
+                                    <option value="Processed">High Sugar / High Processed Foods</option>
+                                    <option value="Standard">Standard Mixed Diet</option>
+                                    <option value="Mediterranean">Mediterranean / Whole Foods Diet</option>
+                                    <option value="PlantBased">Plant-Based / High Fiber</option>
+                                </select>
+                        </div>
+
+                        <!-- Age -->
+                            <div>
+                                <label>4. Age</label>
+                                <input type="number" id="age" min="1" max="120" placeholder="Enter your age">
+                            </div>
+
+                            <!-- Smoking -->
+                            <div>
+                                <label>5. Do you smoke?</label>
+                                <select id="smoking">
+                                    <option value="No">No</option>
+                                    <option value="Occasionally">Occasionally</option>
+                                    <option value="Regularly">Regularly</option>
+                                </select>
+                            </div>
+
+                            <!-- Physical activity -->
+                            <div>
+                                <label>6. Physical Activity</label>
+                                <select id="activity">
+                                    <option value="Low">Low (less than 1 hour per week)</option>
+                                    <option value="Moderate">Moderate (1 to 3 hours per week)</option>
+                                    <option value="High">High (more than 3 hours per week)</option>
+                                </select>
+                            </div>
+
+                        <button type="button" onclick="calculateRisk()">Generate prevention plan</button>
+                    </form>
                 </div>
 
-                <div id="recommendationsList">
-                    <!-- Recommendations inserted via JS -->
-                </div>
-             </div>
-          </main>
+                <!-- Results Section (Hidden by default) -->
+                <div id="resultsCard" class="hidden">
+                    <div>
+                        <h3>Your Personalized Prevention Dashboard</h3>
+                        <span id="riskBadge"></span>
+                    </div>
 
-          <!-- Footer -->
-           <footer>
+                    <div id="recommendationsList">
+                        <!-- Recommendations inserted via JS -->
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
             <p>HealthDoc - Built for Preventive Health Research</p>
-           </footer>
-           <script src="script.js"></script>
+        </footer>
+        
+        <!-- Link to the JavaScript file -->
+        <script src="script.js"></script>
     </body>
 </html>

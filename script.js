@@ -1,4 +1,21 @@
+// Function to switch between Home and Test pages
+function showPage(pageId) {
+    // Hide all page sections
+    document.querySelectorAll('.page-section').forEach(section => {
+        section.classList.add('hidden');
+    });
 
+    // Show the requested page
+    const targetPage = document.getElementById(pageId);
+    if (targetPage) {
+        targetPage.classList.remove('hidden');
+    }
+
+    // Reset scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Function to calculate risk and provide recommendations
 function calculateRisk() {
 
     // Récupération des informations
