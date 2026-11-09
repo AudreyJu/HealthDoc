@@ -1,5 +1,5 @@
 :root {
-  --main-color: #16425B;/*Writings in black*/
+  --main-color: #16425B;
   --bg-color: #f8fafc;
   --accent-color-1: #EB5E55;
   --accent-color-2: #D81E5B;
@@ -23,10 +23,11 @@ body {
   min-height: 100vh;
 }
 
+/* Header */
 body > div:first-of-type {
     background-color: var(--bg-color);
     border-bottom: 1px solid var(--border-color);
-    padding: 1.25rem 2rem;
+    padding: 1rem 1.5rem;
     text-align: center;
     box-shadow: 0 1px 3px 0 rgb(0, 0, 0, 0.05);
 }
@@ -34,15 +35,16 @@ body > div:first-of-type {
 body > div:first-of-type h1 {
     color: var(--main-color);
     font-weight: 700;
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     letter-spacing: -0.025em;
 }
 
+/* Main Content en pourcentages */
 main {
-    max-width: 650px;
-    width: 100%;
-    margin: 2.5rem auto;
-    padding: 0 1rem;
+    width: 92%;
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0;
     flex: 1;
 }
 
@@ -52,12 +54,12 @@ main > div:first-of-type,
     padding: 2.5rem;
     border-radius: 16px;
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     border: 1px solid var(--border-color);
 }
 
 main h2 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: var(--main-color);
     margin-bottom: 0.75rem;
     font-weight: 600;
@@ -70,21 +72,21 @@ main > div:first-of-type > p {
 }
 
 form > div {
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.25rem;
 }
 
 form > div > label {
     display: block;
     font-weight: 600;
     color: var(--main-color);
-    margin-bottom: 0.75rem;
-    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
 }
 
 form div div {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.5rem;
     margin-top: 0.5rem;
 }
 
@@ -96,7 +98,7 @@ form div div label {
     cursor: pointer;
     gap: 0.75rem;
     margin-bottom: 0;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
 input[type="checkbox"] {
@@ -107,11 +109,11 @@ input[type="checkbox"] {
     border-radius: 4px;
 }
 
-/* Select Dropdowns */
 select,
-input[type="number"] {
+input[type="number"],
+input[type="date"] {
     width: 100%;
-    padding: 0.85rem 1rem;
+    padding: 0.75rem 1rem;
     border: 1px solid var(--border-color);
     border-radius: 10px;
     background-color: var(--bg-color);
@@ -123,24 +125,24 @@ input[type="number"] {
 }
 
 select:focus,
-input[type="number"]:focus {
+input[type="number"]:focus,
+input[type="date"]:focus {
     outline: none;
     border-color: var(--main-color);
     box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
 }
 
-/* Submit Button */
 button[type="button"] {
     width: 100%;
     color: var(--main-color);
     border: none;
-    padding: 1rem 1.5rem;
+    padding: 0.85rem 1.25rem;
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
     font-size: 1rem;
     border-radius: 10px;
     cursor: pointer;
-    transition: var(--bg-color) 0.2s, transform 0.1s;
+    transition: background-color 0.2s, transform 0.1s;
     margin-top: 0.5rem;
     box-shadow: 0 4px 6px -1px rgba(13, 148, 136, 0.2);
 }
@@ -153,41 +155,76 @@ button[type="button"]:active {
     transform: scale(0.98);
 }
 
-/* --- Results Section Styling --- */
 #resultsCard {
     border-left: 5px solid var(--accent-color-3);
 }
 
 #resultsCard h3 {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     color: var(--main-color);
     margin-bottom: 0.5rem;
 }
 
 #riskBadge {
     display: inline-block;
-    padding: 0.35rem 0.85rem;
+    padding: 0.3rem 0.75rem;
     border-radius: 9999px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
     margin-top: 0.5rem;
 }
 
 #recommendationsList {
-    margin-top: 1.25rem;
+    margin-top: 1rem;
 }
 
-/* --- Footer --- */
 footer {
     text-align: center;
-    padding: 1.5rem;
+    padding: 1.25rem;
     background-color: var(--bg-color);
     border-top: 1px solid var(--border-color);
     color: var(--main-color);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     margin-top: auto;
 }
 
 .hidden {
     display: none;
+}
+
+.nav-stats-btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #0f172a;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+    text-align: center;
+}
+
+.nav-stats-btn:hover {
+    background: #1e293b;
+}
+
+.date-field-container {
+    margin-bottom: 1.25rem;
+}
+
+.date-field-container label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--main-color);
+    font-size: 0.9rem;
+}
+
+@media screen and (min-width: 768px) {
+    main {
+        width: 85%;
+        max-width: 850px;
+    }
 }

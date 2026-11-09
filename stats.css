@@ -1,0 +1,490 @@
+:root {
+  --main-color: #16425B;
+  --bg-color: #f8fafc;
+  --accent-color-3: #13b1a4;
+  --border-color: #e2e8f0;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  background-color: var(--bg-color);
+  color: var(--main-color);
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header */
+body > div:first-of-type {
+    background-color: var(--bg-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 1.5rem;
+    text-align: center;
+    box-shadow: 0 1px 3px 0 rgb(0, 0, 0, 0.05);
+}
+
+body > div:first-of-type h1 {
+    color: var(--main-color);
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+/* Main Dashboard fluide en pourcentages */
+main {
+    width: 95%;
+    max-width: 1300px;
+    margin: 2rem auto;
+    padding: 0;
+    flex: 1;
+}
+
+.stats-page-container {
+    width: 100%;
+}
+
+.stats-header-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.stats-header-row h2 {
+    font-size: 1.5rem;
+    color: var(--main-color);
+    font-weight: 600;
+}
+
+.back-home-btn {
+    display: inline-block;
+    padding: 10px 18px;
+    background: #0f172a;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: background 0.2s;
+    text-align: center;
+}
+
+.back-home-btn:hover {
+    background: #1e293b;
+}
+
+.stats-card {
+    background: #ffffff;
+    width: 100%;
+    padding: 3%;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-color);
+}
+
+/* Grille des statistiques (3 colonnes en %) */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2%;
+    margin-bottom: 25px;
+}
+
+.stat-box {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stat-label {
+    font-size: 85%;
+    color: #64748b;
+    margin-bottom: 6px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 160%;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.stat-value small {
+    font-size: 70%;
+    color: #94a3b8;
+}
+
+/* Badges de risque */
+.risk-badge-inline {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 90%;
+    font-weight: 600;
+}
+.risk-low { background: #ccfbf1; color: #0f766e; }
+.risk-moderate { background: #fef3c7; color: #b45309; }
+.risk-high { background: #fecaca; color: #b91c1c; }
+
+/* Graphique */
+.chart-card {
+    margin: 25px 0;
+    background: #fff;
+    width: 100%;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.chart-card h4 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #0f172a;
+}
+
+.canvas-container {
+    position: relative;
+    height: 380px;
+    width: 100%;
+}
+
+.chart-legend-risk {
+    display: flex;
+    gap: 15px;
+    font-size: 90%;
+    color: #64748b;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.chart-legend-risk .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.chart-legend-risk i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* Historique compact et sans scroll */
+.history-section {
+    margin-top: 25px;
+}
+
+.history-section h4 {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+    color: #0f172a;
+}
+
+.history-list {
+    list-style: none;
+    padding: 0;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: #fff;
+    width: 100%;
+}
+
+.history-list li {
+    padding: 14px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 95%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 3%;
+    transition: background 0.2s;
+}
+
+.history-list li:hover {
+    background: #f8fafc;
+}
+
+.history-list li:last-child {
+    border-bottom: none;
+}
+
+.history-left {
+    display: flex;
+    align-items: center;
+    min-width: 120px;
+}
+
+.history-date {
+    color: #0f172a;
+    font-weight: 600;
+}
+
+.history-details {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.history-score {
+    color: #475569;
+}
+
+/* Bordures colorées de l'historique */
+.history-low { border-left: 6px solid #10b981; }
+.history-low .history-badge { background: #ccfbf1; color: #0f766e; padding: 4px 10px; border-radius: 20px; font-size: 85%; font-weight: 600; }
+
+.history-moderate { border-left: 6px solid #f59e0b; }
+.history-moderate .history-badge { background: #fef3c7; color: #b45309; padding: 4px 10px; border-radius: 20px; font-size: 85%; font-weight: 600; }
+
+.history-high { border-left: 6px solid #ef4444; }
+.history-high .history-badge { background: #fecaca; color: #b91c1c; padding: 4px 10px; border-radius: 20px; font-size: 85%; font-weight: 600; }
+
+.stats-actions {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.clear-btn {
+    width: auto;
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 90%;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.clear-btn:hover {
+    background: #fecaca;
+}
+
+/* --- VERSION MOBILE --- */
+@media screen and (max-width: 767px) {
+    main {
+        width: 95%;
+    }
+    .stats-card {
+        padding: 4%;
+    }
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    .stats-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .clear-btn {
+        width: 100%;
+    }
+    .history-list li {
+        gap: 15px;
+        padding: 10px 12px;
+    }
+}
+
+footer {
+    text-align: center;
+    padding: 1.25rem;
+    background-color: var(--bg-color);
+    border-top: 1px solid var(--border-color);
+    color: var(--main-color);
+    font-size: 0.8rem;
+    margin-top: auto;
+}
+/* Contrôles de sélection de l'historique */
+.history-header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.history-selection-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.select-all-btn, .delete-selected-btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    transition: background 0.2s;
+}
+
+.select-all-btn {
+    background: #f1f5f9;
+    color: #334155;
+}
+.select-all-btn:hover {
+    background: #e2e8f0;
+}
+
+.delete-selected-btn {
+    background: #fee2e2;
+    color: #b91c1c;
+    border-color: #fecaca;
+}
+.delete-selected-btn:hover {
+    background: #fecaca;
+}
+
+/* Alignement des lignes avec checkbox et comparateur */
+.history-list li {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 95%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    transition: background 0.2s;
+}
+
+.history-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 140px;
+}
+
+.history-checkbox {
+    width: 1.1rem;
+    height: 1.1rem;
+    cursor: pointer;
+    accent-color: var(--main-color);
+}
+
+.history-middle {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+/* Styles pour les ajouts (+) et suppressions (-) de risques */
+.history-diff {
+    display: flex;
+    gap: 10px;
+    font-size: 85%;
+    font-weight: 500;
+}
+
+.diff-added {
+    color: #ef4444; /* Rouge pour le risque ajouté (+) */
+    background: #ffeeec;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.diff-removed {
+    color: #10b981; /* Vert pour le risque qui n'est plus présent (-) */
+    background: #ecfdf5;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* Date cliquable */
+.clickable-date {
+    cursor: pointer;
+    color: #0f172a;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    transition: color 0.2s;
+}
+
+.clickable-date:hover {
+    color: #13b1a4;
+}
+
+/* Structure de la ligne d'historique avec le bloc déroulant */
+.history-list li {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.history-main-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+}
+
+.history-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 150px;
+}
+
+.history-middle {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Bloc des différences (+ et -) affiché au clic */
+.history-diff {
+    width: 100%;
+    padding: 8px 12px;
+    background: #f8fafc;
+    border-radius: 6px;
+    border: 1px dashed var(--border-color);
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+    font-size: 85%;
+}
+
+.diff-added {
+    color: #ef4444; /* Rouge pour le risque ajouté (+) */
+    background: #ffeeec;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.diff-removed {
+    color: #10b981; /* Vert pour le risque supprimé (-) */
+    background: #ecfdf5;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.no-diff {
+    color: #64748b;
+    font-style: italic;
+}

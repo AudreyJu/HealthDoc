@@ -96,6 +96,12 @@
                             </select>
                         </div>
 
+                        <!-- À insérer dans index.html (par exemple juste avant le bouton "Generate prevention plan") -->
+                        <div class="date-field-container">
+                            <label>7.Assessment Date</label>
+                            <input type="date" id="assessmentDate">
+                        </div>
+
                       <button type="button" onclick="calculateRisk()">Generate prevention plan</button>
                 </form>
             </div>
@@ -110,6 +116,9 @@
                 <div id="recommendationsList">
                     <!-- Recommendations inserted via JS -->
                 </div>
+
+                <!-- Bouton de navigation vers la page de statistiques à insérer dans index.html -->
+                <a href="stats.html" class="nav-stats-btn">See my statistics</a>
              </div>
           </main>
 
