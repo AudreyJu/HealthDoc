@@ -70,6 +70,32 @@
                             </select>
                       </div>
 
+                      <!-- Age -->
+                        <div>
+                            <label>4. Age</label>
+                            <input type="number" id="age" min="1" max="120" placeholder="Enter your age">
+                        </div>
+
+                        <!-- Smoking -->
+                        <div>
+                            <label>5. Do you smoke?</label>
+                            <select id="smoking">
+                                <option value="No">No</option>
+                                <option value="Occasionally">Occasionally</option>
+                                <option value="Regularly">Regularly</option>
+                            </select>
+                        </div>
+
+                        <!-- Physical activity -->
+                        <div>
+                            <label>6. Physical Activity</label>
+                            <select id="activity">
+                                <option value="Low">Low (less than 1 hour per week)</option>
+                                <option value="Moderate">Moderate (1 to 3 hours per week)</option>
+                                <option value="High">High (more than 3 hours per week)</option>
+                            </select>
+                        </div>
+
                       <button type="button" onclick="calculateRisk()">Generate prevention plan</button>
                 </form>
             </div>
@@ -91,5 +117,6 @@
            <footer>
             <p>HealthDoc - Built for Preventive Health Research</p>
            </footer>
+           <script src="script.js"></script>
     </body>
 </html>
