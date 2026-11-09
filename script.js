@@ -1,3 +1,9 @@
+// Global State for Documents
+let documents = [
+    { name: "23andMe Genetics Summary", label: "Genetics", date: "2026-01-15", fileName: "genetics_2026.pdf" },
+    { name: "Annual Blood Panel", label: "Blood Work", date: "2026-03-10", fileName: "bloodwork.pdf" }
+];
+
 // Function to switch between Home and Test pages
 function showPage(pageId) {
     // Hide all page sections
@@ -114,4 +120,63 @@ function calculateRisk() {
         "<ul>" + tips.map(t => "<li>" + t + "</li>").join("") + "</ul>";
 
     document.getElementById("resultsCard").classList.remove("hidden");
+}
+
+// Function to save consent preferences
+function saveConsent(event) {
+    event.preventDefault();
+    const authorized = [...document.querySelectorAll('input[name="authorized"]:checked')].map(c => c.value);
+    const doctor = document.getElementById('specificDoctor').value;
+
+    const statusMsg = document.getElementById('consentStatus');
+    statusMsg.classList.remove('hidden');
+    statusMsg.innerHTML = `✅ Preferences saved! Your medical data is authorized to be shared with: <strong>${authorized.length > 0 ? authorized.join(', ') : 'None'}</strong> ${doctor ? `(and ${doctor})` : ''}.`;
+}
+
+// Function to add a new document
+function addDocument(event) {
+    event.preventDefault();
+    const name = document.getElementById('docName').value;
+    const label = document.getElementById('docLabel').value;
+    const fileInput = document.getElementById('docFile');
+    const fileName = fileInput.files[0] ? fileInput.files[0].name : "document.pdf";
+    const date = new Date().toISOString().split('T')[0];
+
+    documents.push({ name, label, date, fileName });
+    
+    // Reset form & re-render
+    document.getElementById('docForm').reset();
+    renderDocuments(documents);
+}
+
+// Function to render documents in the list
+function renderDocuments(docArray) {
+    const list = document.getElementById('documentList');
+    if (docArray.length === 0) {
+        list.innerHTML = `<p class="empty-msg">No documents found matching your search.</p>`;
+        return;
+    }
+
+    list.innerHTML = docArray.map((doc, index) => `
+        <div class="doc-item">
+            <div class="doc-header">
+                <span class="doc-icon">📄</span>
+                <div>
+                    <h4 class="doc-title">${doc.name}</h4>
+                    <span class="doc-date">Uploaded: ${doc.date} (${doc.fileName})</span>
+                </div>
+            </div>
+            <span class="tag tag-${doc.label.toLowerCase().replace(/\s+/g, '')}">${doc.label}</span>
+        </div>
+    `).join('');
+}
+
+// Function to filter documents based on search input
+function filterDocuments() {
+    const searchTerm = document.getElementById('docSearch').value.toLowerCase();
+    const filtered = documents.filter(doc => 
+        doc.name.toLowerCase().includes(searchTerm) || 
+        doc.label.toLowerCase().includes(searchTerm)
+    );
+    renderDocuments(filtered);
 }

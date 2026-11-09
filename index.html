@@ -21,6 +21,8 @@
                         <li><a href="#" onclick="showPage('homePage')">Home</a></li>
                         <li><a href="#" onclick="showPage('testPage')">Prevention Test</a></li>
                         <li><a href="#" onclick="showPage('statsPage')">Results</a></li>
+                        <li><a href="#" onclick="showPage('consentPage')">Data Consent</a></li>
+                        <li><a href="#" onclick="showPage('documentsPage')">My Documents</a></li>
                     </ul>
                 </nav>
             </div>
@@ -133,6 +135,87 @@
 
                     <div id="recommendationsList">
                         <!-- Recommendations inserted via JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE 4: MEDICAL DATA CONSENT FORM -->
+            <section id="consentPage" class="page-section hidden">
+                <div class="card">
+                    <h2>Medical Data Sharing Consent</h2>
+                    <p>Manage who can access your genetics, environmental reports, and prevention plans.</p>
+
+                    <form id="consentForm" onsubmit="saveConsent(event)">
+                        <div class="form-group">
+                            <label>1. Sharing Permission</label>
+                            <label class="radio-label">
+                                <input type="checkbox" id="consentGeneral" required>
+                                <span>I authorize HealthDoc to store and share my health profile with designated parties for preventive care.</span>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label>2. Authorized Entities (Who is allowed to view your data?)</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="authorized" value="Primary Care Physician"> <span>Primary Care Physician</span></label>
+                                <label><input type="checkbox" name="authorized" value="Genetics Specialist"> <span>Genetics Specialist</span></label>
+                                <label><input type="checkbox" name="authorized" value="Hospital Cardiology Department"> <span>Hospital Cardiology Department</span></label>
+                                <label><input type="checkbox" name="authorized" value="Certified Nutritionist"> <span>Certified Nutritionist</span></label>
+                                <label><input type="checkbox" name="authorized" value="Medical Researchers (Anonymized)"> <span>Medical Researchers (Anonymized Data Only)</span></label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>3. Add Specific Provider Email / ID (Optional)</label>
+                            <input type="text" id="specificDoctor" placeholder="e.g., dr.smith@cityhospital.org">
+                        </div>
+
+                        <button type="submit" class="btn-primary">Save Consent Preferences</button>
+                    </form>
+
+                    <div id="consentStatus" class="status-msg hidden"></div>
+                </div>
+            </section>
+
+            <!-- PAGE 5: MY DOCUMENTS SPACE -->
+            <section id="documentsPage" class="page-section hidden">
+                <div class="card">
+                    <h2>My Medical Documents</h2>
+                    <p>Upload, tag, and search your medical records, blood tests, and genetic reports.</p>
+
+                    <!-- Document Upload Form -->
+                    <form id="docForm" onsubmit="addDocument(event)" class="upload-box">
+                        <h3>Add New Document</h3>
+                        <div class="form-row">
+                            <input type="text" id="docName" placeholder="Document Name (e.g., Blood Test 2026)" required>
+                            <select id="docLabel" required>
+                                <option value="">Select Label/Category</option>
+                                <option value="Genetics">Genetics</option>
+                                <option value="Blood Work">Blood Work</option>
+                                <option value="Cardiology">Cardiology</option>
+                                <option value="Prescription">Prescription</option>
+                                <option value="General Report">General Report</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="file-upload-wrapper">
+                                <input type="file" id="docFile" onchange="updateFileLabel()" required hidden>
+                                <label for="docFile" class="btn-file-custom">
+                                    <span id="fileBtnText">Choose a Document</span>
+                                </label>
+                            </div>
+                            <button type="submit" class="btn-primary">Upload Document</button>
+                        </div>
+                    </form>
+
+                    <!-- Search Bar -->
+                    <div class="search-box">
+                        <input type="text" id="docSearch" onkeyup="filterDocuments()" placeholder="Search documents by name or category...">
+                    </div>
+
+                    <!-- Document List -->
+                    <div id="documentList" class="doc-grid">
+                        <!-- Documents dynamically injected here -->
                     </div>
                 </div>
             </section>
