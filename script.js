@@ -72,6 +72,7 @@ function calculateRisk() {
         tips.push("Try to walk 30 minutes a day, even in small sessions.");
     }
 
+
     if (activity === "High")
         score -= 1;
 
@@ -95,5 +96,5 @@ function calculateRisk() {
     document.getElementById("recommendationsList").innerHTML =
         "<ul>" + tips.map(t => "<li>" + t + "</li>").join("") + "</ul>";
 
-    document.getElementById("resultsCard").style.display = "block";
+    document.getElementById("resultsCard").classList.remove("hidden");
 }
