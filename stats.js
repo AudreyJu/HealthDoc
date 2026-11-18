@@ -1,231 +1,238 @@
-// stats.js - Statistics dashboard script
+/* Insights page — chart, details and precise selection/deletion. */
+document.addEventListener('DOMContentLoaded', () => {
+  'use strict';
+  const data = window.HealthDocData;
+  const $ = (id) => document.getElementById(id);
+  const historyList = $('historyList');
+  const selectedIds = new Set();
+  let records = [];
 
-document.addEventListener("DOMContentLoaded", () => {
-    renderStatsDashboard();
+  function el(tag, className = '', content) {
+    const element = document.createElement(tag);
+    if (className) element.className = className;
+    if (content !== undefined) element.textContent = String(content);
+    return element;
+  }
+
+  function fieldText(record, field) {
+    if (field === 'genetics') {
+      if (!record.genetics) return record.geneticsCount === null ? 'Not recorded' : `${record.geneticsCount} selected (details not saved)`;
+      return record.genetics.length ? record.genetics.map(g => data.fieldNames[g]).join(', ') : 'None selected';
+    }
+    if (field === 'age') return record.age === null ? 'Not recorded' : `${record.age} years`;
+    const names = { environment: data.environmentNames, nutrition: data.nutritionNames, smoking: data.smokingNames, activity: data.activityNames }[field];
+    return names[record[field]] || 'Not recorded';
+  }
+
+  const detailFields = [
+    ['genetics', 'Family history'], ['environment', 'Environment'], ['nutrition', 'Eating habits'],
+    ['age', 'Age'], ['smoking', 'Smoking'], ['activity', 'Activity']
+  ];
+
+  function createDetails(record, previous) {
+    const details = el('details', 'history-details');
+    details.append(el('summary', '', 'View details & comparison'));
+    const content = el('div', 'details-content');
+    const description = el('div', 'history-fields');
+    for (const [field, label] of detailFields) {
+      const fieldBox = el('div', 'history-field');
+      fieldBox.append(el('span', 'history-field-name', label), el('strong', '', fieldText(record, field)));
+      description.append(fieldBox);
+    }
+    content.append(description);
+    const comparisonTitle = el('h4', '', previous ? 'Changes since previous assessment' : 'First assessment');
+    content.append(comparisonTitle);
+    const changes = el('ul', 'change-list');
+    if (!previous) {
+      changes.append(el('li', 'change-neutral', 'No previous assessment to compare with.'));
+    } else {
+      const delta = record.score - previous.score;
+      if (delta !== 0) {
+        changes.append(el('li', delta > 0 ? 'change-up' : 'change-down', `Attention score: ${delta > 0 ? '+' : ''}${delta} points`));
+      }
+      for (const [field, label] of detailFields) {
+        if (field === 'genetics') {
+          // Historical records lacked the selected genetics array; don't invent comparisons.
+          if (!record.genetics || !previous.genetics) continue;
+          const added = record.genetics.filter(g => !previous.genetics.includes(g));
+          const removed = previous.genetics.filter(g => !record.genetics.includes(g));
+          added.forEach(g => changes.append(el('li', 'change-up', `Family history added: ${data.fieldNames[g]}`)));
+          removed.forEach(g => changes.append(el('li', 'change-down', `Family history removed: ${data.fieldNames[g]}`)));
+          continue;
+        }
+        const previousValue = fieldText(previous, field);
+        const currentValue = fieldText(record, field);
+        if (previousValue !== currentValue) {
+          changes.append(el('li', 'change-neutral', `${label}: ${previousValue} → ${currentValue}`));
+        }
+      }
+      if (!changes.children.length) changes.append(el('li', 'change-neutral', 'No recorded differences compared with the previous assessment.'));
+    }
+    content.append(changes);
+    details.append(content);
+    return details;
+  }
+
+  function renderHistory() {
+    historyList.replaceChildren();
+    records.forEach((record, index) => {
+      const level = data.scoreLevel(record.score);
+      const li = el('li', 'history-item');
+      const row = el('div', 'history-row');
+      const left = el('div', 'history-row-left');
+      const checkbox = el('input', 'entry-checkbox');
+      checkbox.type = 'checkbox';
+      checkbox.checked = selectedIds.has(record.id);
+      checkbox.setAttribute('aria-label', `Select assessment on ${data.displayDate(record.date)}, score ${record.score}`);
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) selectedIds.add(record.id);
+        else selectedIds.delete(record.id);
+        updateSelection();
+      });
+      const heading = el('div', 'history-row-title');
+      heading.append(el('strong', '', data.displayDate(record.date)), el('span', '', `Assessment ${index + 1}`));
+      left.append(checkbox, heading);
+      const right = el('div', 'history-row-right');
+      const score = el('div', 'history-score');
+      score.append(el('strong', '', record.score), el('span', '', ' / 11'));
+      const badge = el('span', `status-pill ${level.css}`, level.name);
+      right.append(score, badge);
+      row.append(left, right);
+      li.append(row, createDetails(record, index > 0 ? records[index - 1] : null));
+      historyList.append(li);
+    });
+    updateSelection();
+  }
+
+  function updateSelection() {
+    const count = records.filter(r => selectedIds.has(r.id)).length;
+    $('selectedCount').textContent = count ? `(${count})` : '';
+    $('deleteSelected').disabled = count === 0;
+    $('deleteSelected').textContent = count ? `Delete selected (${count})` : 'Delete selected';
+    $('selectAll').checked = records.length > 0 && count === records.length;
+    $('selectAll').indeterminate = count > 0 && count < records.length;
+  }
+
+  function svg(tag, attributes = {}, textValue) {
+    const node = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    Object.entries(attributes).forEach(([key, value]) => node.setAttribute(key, String(value)));
+    if (textValue !== undefined) node.textContent = String(textValue);
+    return node;
+  }
+
+  function renderChart() {
+    const chart = $('scoreChart');
+    chart.replaceChildren();
+    const width = Math.max(780, chart.parentElement.clientWidth - 2, 110 + (records.length - 1) * 88);
+    const height = 310;
+    const left = 48, right = 36, top = 18, bottom = 52;
+    const plotHeight = height - top - bottom;
+    const plotWidth = width - left - right;
+    chart.style.width = `${width}px`;
+    const picture = svg('svg', { viewBox: `0 0 ${width} ${height}`, width, height, role: 'img', 'aria-label': `Attention scores from ${records.length} check-ins: ${records.map(r => r.score).join(', ')}` });
+    const y = value => top + (11 - value) * plotHeight / 11;
+    const x = index => records.length === 1
+      ? left + (chart.parentElement.clientWidth < 780 ? 118 : plotWidth / 2)
+      : left + index * plotWidth / (records.length - 1);
+
+    const bands = [
+      [7.5, 11, '#fff2ef'], [3.5, 7.5, '#fff9e9'], [0, 3.5, '#eaf8f4']
+    ];
+    bands.forEach(([start, end, fill]) => {
+      picture.append(svg('rect', { x: left, y: y(end), width: plotWidth, height: y(start) - y(end), fill, rx: 3 }));
+    });
+    for (let i = 0; i <= 11; i += 2) {
+      const yPos = y(i);
+      picture.append(svg('line', { x1: left, y1: yPos, x2: width - right, y2: yPos, stroke: '#dfe8ef', 'stroke-width': 1 }));
+      picture.append(svg('text', { x: left - 13, y: yPos + 4, 'text-anchor': 'end', class: 'svg-axis-label' }, i));
+    }
+    const points = records.map((record, index) => [x(index), y(record.score)]);
+    if (points.length > 1) {
+      const path = points.map(([px, py], index) => `${index ? 'L' : 'M'} ${px} ${py}`).join(' ');
+      picture.append(svg('path', { d: path, stroke: '#2c8f98', 'stroke-width': 3, fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
+    }
+    const labelStride = Math.max(1, Math.ceil(records.length / 8));
+    records.forEach((record, index) => {
+      const [px, py] = points[index];
+      const color = record.score <= 3 ? '#19a98e' : record.score <= 7 ? '#f0a535' : '#e66b69';
+      picture.append(svg('circle', { cx: px, cy: py, r: 10, fill: '#fff', opacity: 0.9 }));
+      const point = svg('circle', { cx: px, cy: py, r: 6, fill: color, stroke: '#fff', 'stroke-width': 2 });
+      point.append(svg('title', {}, `${data.displayDate(record.date)}: ${record.score} / 11`));
+      picture.append(point);
+      if (index % labelStride === 0 || index === records.length - 1) {
+        picture.append(svg('text', { x: px, y: height - 22, 'text-anchor': 'middle', class: 'svg-axis-label' }, data.displayDate(record.date)));
+      }
+    });
+    chart.append(picture);
+  }
+
+  function render() {
+    const state = data.readHistory();
+    $('statsError').hidden = true;
+    if (state.error) {
+      $('statsError').textContent = state.error;
+      $('statsError').hidden = false;
+    }
+    records = data.sortHistory(state.records);
+    selectedIds.clear();
+    $('emptyState').hidden = records.length !== 0 || Boolean(state.error);
+    $('statsDashboard').hidden = records.length === 0;
+    if (!records.length) return;
+
+    const sum = records.reduce((acc, record) => acc + record.score, 0);
+    const latest = records[records.length - 1];
+    const level = data.scoreLevel(latest.score);
+    $('totalAssessments').textContent = records.length;
+    $('averageScore').textContent = (sum / records.length).toFixed(1);
+    $('latestBadge').className = `status-pill ${level.css}`;
+    $('latestBadge').textContent = level.name;
+    $('latestDate').textContent = data.displayDate(latest.date);
+    renderChart();
+    renderHistory();
+  }
+
+  $('selectAll').addEventListener('change', (event) => {
+    selectedIds.clear();
+    if (event.target.checked) records.forEach(record => selectedIds.add(record.id));
+    historyList.querySelectorAll('.entry-checkbox').forEach(checkbox => { checkbox.checked = event.target.checked; });
+    updateSelection();
+  });
+
+  $('deleteSelected').addEventListener('click', () => {
+    const count = selectedIds.size;
+    if (!count) return;
+    if (!confirm(`Delete ${count} selected assessment${count > 1 ? 's' : ''}? This cannot be undone.`)) return;
+    // Delete by stable record ID, not by sorted visual position.
+    const surviving = records.filter(record => !selectedIds.has(record.id));
+    if (!data.saveHistory(surviving)) {
+      $('statsError').textContent = 'Could not save these changes. Check your browser storage permissions.';
+      $('statsError').hidden = false;
+      return;
+    }
+    render();
+  });
+
+  $('clearHistory').addEventListener('click', () => {
+    if (!confirm('Delete ALL assessments from this browser? This cannot be undone.')) return;
+    if (!data.saveHistory([])) {
+      $('statsError').textContent = 'Could not clear history. Check your browser storage permissions.';
+      $('statsError').hidden = false;
+      return;
+    }
+    render();
+  });
+
+  $('exportHistory').addEventListener('click', () => {
+    const backup = new Blob([JSON.stringify(records, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(backup);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `healthdoc-history-${data.localToday()}.json`;
+    document.body.append(anchor);
+    anchor.click();
+    anchor.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+
+  render();
 });
-
-let myChart = null;
-
-function renderStatsDashboard() {
-    let history = JSON.parse(localStorage.getItem("healthDocHistory")) || [];
-    const statsContainer = document.getElementById("statsDashboard");
-
-    if (!statsContainer) return;
-
-    if (history.length === 0) {
-        statsContainer.innerHTML = `
-            <div class="empty-state">
-                <p>No assessment history found. Complete your first prevention plan on the main page to start tracking statistics.</p>
-                <a href="index.html" class="back-home-btn" style="margin-top: 15px;">Go to Assessment</a>
-            </div>
-        `;
-        return;
-    }
-
-    // Sort history chronologically (oldest to newest)
-    history.sort((a, b) => {
-        const [dayA, monthA, yearA] = a.date.split('/');
-        const [dayB, monthB, yearB] = b.date.split('/');
-        return new Date(`${yearA}-${monthA}-${dayA}`) - new Date(`${yearB}-${monthB}-${dayB}`);
-    });
-
-    const totalAssessments = history.length;
-    const averageScore = (history.reduce((acc, curr) => acc + curr.score, 0) / totalAssessments).toFixed(1);
-    const lastAssessment = history[history.length - 1];
-
-    let badgeClass = "risk-low";
-    if (lastAssessment.score > 3 && lastAssessment.score <= 7) badgeClass = "risk-moderate";
-    if (lastAssessment.score > 7) badgeClass = "risk-high";
-
-    statsContainer.innerHTML = `
-        <div class="stats-grid">
-            <div class="stat-box">
-                <span class="stat-label">Total Assessments</span>
-                <span class="stat-value">${totalAssessments}</span>
-            </div>
-            <div class="stat-box">
-                <span class="stat-label">Average Risk Score</span>
-                <span class="stat-value">${averageScore} <small>/ 11</small></span>
-            </div>
-            <div class="stat-box">
-                <span class="stat-label">Latest Risk Level</span>
-                <span class="stat-value"><span class="risk-badge-inline ${badgeClass}">${lastAssessment.riskLevel}</span></span>
-            </div>
-        </div>
-
-        <div class="chart-card">
-            <h4>Risk Score Evolution</h4>
-            <div class="chart-legend-risk">
-                <span class="legend-item"><i style="background: #10b981;"></i> Low risk (0-3)</span>
-                <span class="legend-item"><i style="background: #f59e0b;"></i> Moderate risk (4-7)</span>
-                <span class="legend-item"><i style="background: #ef4444;"></i> High risk (8-11)</span>
-            </div>
-            <div class="canvas-container">
-                <canvas id="riskChart"></canvas>
-            </div>
-        </div>
-
-        <div class="history-section">
-            <div class="history-header-actions">
-                <h4>Assessment History & Comparison</h4>
-                <div class="history-selection-controls">
-                    <button type="button" onclick="toggleSelectAll()" class="select-all-btn" id="selectAllBtn">Select All</button>
-                    <button type="button" onclick="deleteSelectedHistory()" class="delete-selected-btn">Delete Selected</button>
-                </div>
-            </div>
-            
-            <ul class="history-list">
-                ${history.map((item, index) => {
-                    let itemRiskClass = "history-low";
-                    if (item.score > 3 && item.score <= 7) itemRiskClass = "history-moderate";
-                    if (item.score > 7) itemRiskClass = "history-high";
-
-                    // Comparaison avec l'élément précédent pour les risques (+ / -)
-                    let diffHtml = "";
-                    if (index > 0) {
-                        const prevItem = history[index - 1];
-                        const prevGenetics = prevItem.genetics || [];
-                        const currGenetics = item.genetics || [];
-
-                        const added = currGenetics.filter(g => !prevGenetics.includes(g));
-                        const removed = prevGenetics.filter(g => !currGenetics.includes(g));
-
-                        let diffParts = [];
-                        added.forEach(g => diffParts.push(`<span class="diff-added">+ ${g}</span>`));
-                        removed.forEach(g => diffParts.push(`<span class="diff-removed">- ${g}</span>`));
-
-                        if (diffParts.length > 0) {
-                            diffHtml = `<div class="history-diff" id="diff-${index}" style="display: none;">${diffParts.join(" ")}</div>`;
-                        } else {
-                            diffHtml = `<div class="history-diff" id="diff-${index}" style="display: none;"><span class="no-diff">No changes compared to previous assessment</span></div>`;
-                        }
-                    } else {
-                        diffHtml = `<div class="history-diff" id="diff-${index}" style="display: none;"><span class="no-diff">First assessment</span></div>`;
-                    }
-
-                    return `
-                        <li class="${itemRiskClass}">
-                            <div class="history-main-row">
-                                <div class="history-left">
-                                    <input type="checkbox" class="history-checkbox" data-index="${index}" onclick="event.stopPropagation();">
-                                    <span class="history-date clickable-date" onclick="toggleDiff(${index})">${item.date} 🔍</span>
-                                </div>
-                                <div class="history-middle">
-                                    <span class="history-score">Score : <strong>${item.score}</strong> / 11</span>
-                                    <span class="history-badge">${item.riskLevel}</span>
-                                </div>
-                            </div>
-                            ${diffHtml}
-                        </li>
-                    `;
-                }).join("")}
-            </ul>
-        </div>
-        <div class="stats-actions">
-            <button type="button" onclick="clearStats()" class="clear-btn">Clear All History</button>
-        </div>
-    `;
-
-    const pointColors = history.map(item => {
-        if (item.score <= 3) return '#10b981';
-        if (item.score <= 7) return '#f59e0b';
-        return '#ef4444';
-    });
-
-    const canvasElement = document.getElementById("riskChart");
-    if (!canvasElement) return;
-    const ctx = canvasElement.getContext("2d");
-    
-    if (myChart) {
-        myChart.destroy();
-    }
-
-    myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: history.map(item => item.date),
-            datasets: [{
-                label: 'Risk Score',
-                data: history.map(item => item.score),
-                borderColor: '#0f172a',
-                backgroundColor: 'rgba(15, 23, 42, 0.05)',
-                borderWidth: 2.5,
-                pointBackgroundColor: pointColors,
-                pointBorderColor: '#fff',
-                pointBorderWidth: 2,
-                pointRadius: 6,
-                pointHoverRadius: 8,
-                tension: 0.2,
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 11,
-                    ticks: {
-                        stepSize: 1
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false
-                }
-            }
-        }
-    });
-}
-
-function toggleSelectAll() {
-    const checkboxes = document.querySelectorAll('.history-checkbox');
-    const selectAllBtn = document.getElementById('selectAllBtn');
-    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
-
-    checkboxes.forEach(cb => cb.checked = !allChecked);
-    selectAllBtn.textContent = allChecked ? "Select All" : "Deselect All";
-}
-
-function deleteSelectedHistory() {
-    let history = JSON.parse(localStorage.getItem("healthDocHistory")) || [];
-    const checkboxes = document.querySelectorAll('.history-checkbox');
-    
-    // Récupérer les indices cochés en partant de la fin pour ne pas perturber les index lors de la suppression
-    const indicesToDelete = [];
-    checkboxes.forEach((cb, index) => {
-        if (cb.checked) indicesToDelete.push(index);
-    });
-
-    if (indicesToDelete.length === 0) {
-        alert("Please select at least one assessment to delete.");
-        return;
-    }
-
-    if (confirm(`Are you sure you want to delete ${indicesToDelete.length} selected assessment(s)?`)) {
-        // Filtrer le tableau pour garder uniquement les éléments non cochés
-        history = history.filter((_, index) => !indicesToDelete.includes(index));
-        localStorage.setItem("healthDocHistory", JSON.stringify(history));
-        renderStatsDashboard();
-    }
-}
-
-function clearStats() {
-    if (confirm("Are you sure you want to clear your entire assessment history?")) {
-        localStorage.removeItem("healthDocHistory");
-        renderStatsDashboard();
-    }
-}
-
-function toggleDiff(index) {
-    const diffElement = document.getElementById(`diff-${index}`);
-    if (diffElement) {
-        if (diffElement.style.display === "none") {
-            diffElement.style.display = "flex";
-        } else {
-            diffElement.style.display = "none";
-        }
-    }
-}

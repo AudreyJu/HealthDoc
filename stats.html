@@ -1,41 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>HealthDoc - Statistics</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="stats.css">
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    </head>
-    <body>
-        <!-- Header -->
-         <div>
-            <div>
-                <h1>HealthDoc</h1>
-            </div>
-         </div>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f8fc">
+  <meta name="description" content="Review your HealthDoc wellness assessments, trends and comparisons.">
+  <title>HealthDoc — My insights</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="stats.css">
+  <script src="shared.js" defer></script>
+  <script src="stats.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="index.html" aria-label="HealthDoc home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/></svg></span><span>health<span class="brand-accent">doc</span><span class="brand-dot">.</span></span></a>
+      <nav class="main-nav" aria-label="Main navigation"><a href="index.html#homePage" class="nav-link">Home</a><a href="index.html#testPage" class="nav-link">Assessment</a><a href="stats.html" class="nav-link is-active" aria-current="page">Insights</a><a href="index.html#consentPage" class="nav-link">Consent</a><a href="index.html#documentsPage" class="nav-link">Documents</a></nav>
+    </div>
+  </header>
 
-         <!-- Main content -->
-          <main>
-            <div class="stats-page-container">
-                <div class="stats-header-row">
-                    <h2>Your Health Statistics Dashboard</h2>
-                    <a href="index.html" class="back-home-btn">← Back to Assessment</a>
-                </div>
+  <main class="shell page-content stats-main">
+    <div class="stats-page-heading">
+      <div><div class="eyebrow"><span class="eyebrow-dot"></span> YOUR PERSONAL OVERVIEW</div><h1>Progress at a <span>glance.</span></h1><p>See your past wellness check-ins, explore patterns, and reflect on what changed.</p></div>
+      <a href="index.html#testPage" class="button button-secondary"><span aria-hidden="true">←</span> New assessment</a>
+    </div>
 
-                <div id="statsDashboard" class="stats-card">
-                    <!-- Statistics will be rendered here -->
-                </div>
-            </div>
-          </main>
+    <section id="emptyState" class="surface empty-state" hidden>
+      <div class="empty-icon" aria-hidden="true">✦</div>
+      <h2>Nothing here yet</h2>
+      <p>Complete your first wellness assessment to see your progress and history here.</p>
+      <a href="index.html#testPage" class="button button-primary">Start an assessment <span aria-hidden="true">→</span></a>
+    </section>
+    <p id="statsError" class="form-message" role="alert" hidden></p>
 
-          <!-- Footer -->
-           <footer>
-            <p>HealthDoc - Built for Preventive Health Research</p>
-           </footer>
-           <script src="stats.js"></script>
-    </body>
+    <div id="statsDashboard" hidden>
+      <section class="metric-grid" aria-label="Key statistics">
+        <div class="surface metric-card"><span class="metric-icon metric-blue" aria-hidden="true">▦</span><span class="metric-label">Total assessments</span><strong id="totalAssessments" class="metric-number">0</strong><span class="metric-caption">Saved check-ins</span></div>
+        <div class="surface metric-card"><span class="metric-icon metric-mint" aria-hidden="true">↗</span><span class="metric-label">Average attention score</span><strong class="metric-number"><span id="averageScore">0</span><small> / 11</small></strong><span class="metric-caption">Across all assessments</span></div>
+        <div class="surface metric-card"><span class="metric-icon metric-violet" aria-hidden="true">♡</span><span class="metric-label">Most recent assessment</span><div class="metric-status"><span id="latestBadge" class="status-pill level-low">Lower attention</span></div><span id="latestDate" class="metric-caption"></span></div>
+      </section>
+
+      <section class="surface chart-section" aria-labelledby="trendTitle">
+        <div class="section-head"><div><span class="section-overline">OVER TIME</span><h2 id="trendTitle">Attention score trend</h2><p>Your checklist results across assessments. A higher score means more topics flagged by this simple model.</p></div></div>
+        <div class="chart-legend"><span><i class="legend-dot dot-low"></i> Lower (0–3)</span><span><i class="legend-dot dot-medium"></i> Moderate (4–7)</span><span><i class="legend-dot dot-high"></i> Higher (8–11)</span></div>
+        <div class="chart-scroller" tabindex="0" aria-label="Scrollable chart of assessment scores"><div id="scoreChart" class="score-chart" role="img" aria-label="Trend chart"></div></div>
+        <p class="chart-note">This is a non-clinical, illustrative score; it cannot measure changes in medical risk.</p>
+      </section>
+
+      <section class="surface history-section" aria-labelledby="historyTitle">
+        <div class="section-head history-head"><div><span class="section-overline">YOUR JOURNAL</span><h2 id="historyTitle">Assessment history</h2><p>Select entries to delete, or expand a check-in for more details and a comparison with the previous one.</p></div></div>
+        <div class="history-toolbar"><label class="select-all-label"><input type="checkbox" id="selectAll"> <span>Select all <span id="selectedCount"></span></span></label><div class="history-actions"><button id="exportHistory" class="button button-quiet" type="button">↓ Export JSON</button><button id="deleteSelected" class="button button-danger-outline" type="button" disabled>Delete selected</button></div></div>
+        <ul id="historyList" class="history-list"></ul>
+        <div class="history-bottom"><span>Data stays on this device unless you export it.</span><button id="clearHistory" class="button button-text-danger" type="button">Clear all history</button></div>
+      </section>
+    </div>
+  </main>
+  <footer class="site-footer"><div class="shell footer-content"><span>© HealthDoc · Personal wellness journal</span><span>Designed for reflection, not medical diagnosis</span></div></footer>
+</body>
 </html>
