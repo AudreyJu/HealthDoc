@@ -1,23 +1,28 @@
+
 :root {
-  --main-color: #16425B;/*Writings in black*/
-  --secondary-color: #1ba4bc;
-  --bg-color: #f8fafc;
-  --accent-color-1: #EB5E55;
-  --accent-color-2: #1ba4bc;
-  --accent-color-3: #13b1a4;
-  --border-color: #e2e8f0;
-  --border-color-variant: #80ebd6;
-  --tag-genetics-bg: #e0f7fa;
-  --tag-genetics-text: #006064;
-  --tag-bloodwork-bg: #fff3e0;
-  --tag-bloodwork-text: #e65100;
-  --tag-cardiology-bg: #e8f5e9;
-  --tag-cardiology-text: #2e7d32;
-  --tag-prescription-bg: #fce4ec;
-  --tag-prescription-text: #c2185b;
-  --tag-generalreport-bg: #f3e5f5;
-  --tag-generalreport-text: #7b1fa2;
+    --main-color: #16425B;
+    --secondary-color: #1ba4bc;
+    --bg-color: #f8fafc;
+    --accent-color-1: #EB5E55;
+    --accent-color-2: #1ba4bc;
+    --accent-color-3: #13b1a4;
+    --border-color: #e2e8f0;
+    --border-color-variant: #80ebd6;
+    --text-color-secondary: #64748b;
+
+    --tag-genetics-bg: #e0f7fa;
+    --tag-genetics-text: #006064;
+    --tag-bloodwork-bg: #fff3e0;
+    --tag-bloodwork-text: #e65100;
+    --tag-cardiology-bg: #e8f5e9;
+    --tag-cardiology-text: #2e7d32;
+    --tag-prescription-bg: #fce4ec;
+    --tag-prescription-text: #c2185b;
+    --tag-generalreport-bg: #f3e5f5;
+    --tag-generalreport-text: #7b1fa2;
 }
+
+/* Global */
 
 * {
     box-sizing: border-box;
@@ -26,17 +31,21 @@
 }
 
 body {
-  font-family: "Montserrat", sans-serif;
-  background-color: var(--bg-color);
-  color: var(--main-color);
-  margin: 0;
-  line-height: 1.6;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+    font-family: "Montserrat", sans-serif;
+    background-color: var(--bg-color);
+    color: var(--main-color);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-/* Header & Nav */
+.hidden {
+    display: none !important;
+}
+
+/* Header & Navigation */
+
 .navbar {
     background-color: var(--secondary-color);
     color: white;
@@ -49,120 +58,113 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1.5rem;
+}
+
+.logo {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
 }
 
 .nav-links {
     list-style: none;
     display: flex;
+    flex-wrap: wrap;
     gap: 1.5rem;
-    margin: 0;
-    padding: 0;
 }
 
 .nav-links a {
     color: white;
     text-decoration: none;
     font-weight: 600;
+    transition: color 0.2s;
 }
 
 .nav-links a:hover {
     text-decoration: underline;
 }
 
-.btn-primary {
-    background-color: var(--secondary-color);
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 1rem;
-}
-
-.btn-primary:hover {
-    background-color: var(--accent-color-3);
-}
-
-body > div:first-of-type {
-    background-color: var(--bg-color);
-    border-bottom: 1px solid var(--border-color);
-    padding: 1.25rem 2rem;
-    text-align: center;
-    box-shadow: 0 1px 3px 0 rgb(0, 0, 0, 0.05);
-}
-
-body > div:first-of-type h1 {
-    color: var(--main-color);
-    font-weight: 700;
-    font-size: 1.75rem;
-    letter-spacing: -0.025em;
-}
+/* Main Content */
 
 main {
-    max-width: 650px;
-    width: 100%;
-    margin: 2.5rem auto;
-    padding: 0 1rem;
+    width: 92%;
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0;
     flex: 1;
 }
 
-/* Layout */
 .main-container {
     max-width: 900px;
     margin: 2rem auto;
     padding: 0 1rem;
 }
 
-.card {
-    background: var(--bg-color);
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
-}
-
-main > div:first-of-type,
+.card,
+.hero-card,
+#testPage > div:first-child,
 #resultsCard {
-    background: var(--bg-color);
+    background: white;
     padding: 2.5rem;
     border-radius: 16px;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
     border: 1px solid var(--border-color);
 }
 
 main h2 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: var(--main-color);
     margin-bottom: 0.75rem;
     font-weight: 600;
 }
 
-main > div:first-of-type > p {
+main p {
     color: var(--main-color);
     font-size: 0.95rem;
+    margin-bottom: 1rem;
+}
+
+/* Home Page */
+
+.hero-card {
+    text-align: center;
+}
+
+.hero-card h2 {
+    font-size: 1.8rem;
+}
+
+.tagline {
     margin-bottom: 2rem;
 }
 
+.mission-box {
+    background: var(--bg-color);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin: 2rem 0;
+    text-align: left;
+}
+
+.mission-box h3 {
+    margin-bottom: 0.75rem;
+}
+
+/* Forms */
+
 form > div {
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.25rem;
 }
 
 form > div > label {
     display: block;
     font-weight: 600;
     color: var(--main-color);
-    margin-bottom: 0.75rem;
-    font-size: 0.95rem;
-}
-
-form div div {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
 }
 
 form div div label {
@@ -173,7 +175,7 @@ form div div label {
     cursor: pointer;
     gap: 0.75rem;
     margin-bottom: 0;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
 .form-group label {
@@ -182,7 +184,8 @@ form div div label {
     margin-bottom: 0.5rem;
 }
 
-.checkbox-group, .radio-label {
+.checkbox-group,
+.radio-label {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -199,100 +202,150 @@ form div div label {
 input[type="checkbox"] {
     width: 1.2rem;
     height: 1.2rem;
-    accent-color: var(--accent-color-1); 
+    accent-color: var(--accent-color-1);
     cursor: pointer;
-    border-radius: 4px;
+    flex-shrink: 0;
 }
 
-/* Select Dropdowns */
 select,
-input[type="number"] {
+input[type="number"],
+input[type="date"],
+input[type="text"] {
     width: 100%;
-    padding: 0.85rem 1rem;
+    padding: 0.75rem 1rem;
     border: 1px solid var(--border-color);
     border-radius: 10px;
-    background-color: var(--bg-color);
-    font-family: 'Montserrat', sans-serif;
+    background-color: white;
+    font-family: "Montserrat", sans-serif;
     font-size: 0.95rem;
     color: var(--main-color);
-    cursor: pointer;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 select:focus,
-input[type="number"]:focus {
+input[type="number"]:focus,
+input[type="date"]:focus,
+input[type="text"]:focus {
     outline: none;
-    border-color: var(--main-color);
-    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(27, 164, 188, 0.15);
 }
 
-input[type="number"], input[type="text"], select {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    box-sizing: border-box;
-}
+/* Buttons */
 
-/* Submit Button */
-button[type="button"] {
-    width: 100%;
-    color: var(--main-color);
+.btn-primary,
+button[type="button"],
+button[type="submit"] {
+    background-color: var(--secondary-color);
+    color: white;
     border: none;
-    padding: 1rem 1.5rem;
-    font-family: 'Montserrat', sans-serif;
+    padding: 0.85rem 1.25rem;
+    font-family: "Montserrat", sans-serif;
     font-weight: 600;
     font-size: 1rem;
     border-radius: 10px;
     cursor: pointer;
-    transition: var(--bg-color) 0.2s, transform 0.1s;
+    transition: background-color 0.2s, transform 0.1s;
     margin-top: 0.5rem;
-    box-shadow: 0 4px 6px -1px rgba(13, 148, 136, 0.2);
 }
 
-button[type="button"]:hover {
+.btn-primary:hover,
+button[type="button"]:hover,
+button[type="submit"]:hover {
     background-color: var(--accent-color-3);
 }
 
-button[type="button"]:active {
+.btn-primary:active,
+button[type="button"]:active,
+button[type="submit"]:active {
     transform: scale(0.98);
 }
 
-/* --- Results Section Styling --- */
+#healthForm > button {
+    width: 100%;
+}
+
+/* Prevention Results */
+
 #resultsCard {
     border-left: 5px solid var(--accent-color-3);
     margin-top: 2rem;
 }
 
 #resultsCard h3 {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     color: var(--main-color);
     margin-bottom: 0.5rem;
 }
 
 #riskBadge {
     display: inline-block;
-    padding: 0.35rem 0.85rem;
+    padding: 0.3rem 0.75rem;
     border-radius: 9999px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
     margin-top: 0.5rem;
 }
 
 #recommendationsList {
-    margin-top: 1.25rem;
+    margin-top: 1rem;
 }
+
+#recommendationsList ul {
+    padding-left: 1.5rem;
+}
+
+#recommendationsList li {
+    margin-bottom: 0.5rem;
+}
+
+/* Assessment Date */
+
+.date-field-container {
+    margin-bottom: 1.25rem;
+}
+
+.date-field-container label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--main-color);
+    font-size: 0.9rem;
+}
+
+/* Statistics Navigation */
+
+.nav-stats-btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #0f172a;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+    text-align: center;
+}
+
+.nav-stats-btn:hover {
+    background: #1e293b;
+}
+
+/* Consent Status */
 
 .status-msg {
     margin-top: 1rem;
     padding: 1rem;
-    background-color: var(--bg-color);
+    background-color: #f0fdfa;
     border: 1px solid var(--border-color-variant);
     color: var(--accent-color-3);
     border-radius: 8px;
 }
 
-/* Document Space Styles */
+/* Document Space */
+
 .upload-box {
     background: var(--bg-color);
     padding: 1.5rem;
@@ -300,10 +353,20 @@ button[type="button"]:active {
     margin-bottom: 1.5rem;
 }
 
+.upload-box h3 {
+    margin-bottom: 1rem;
+}
+
 .form-row {
     display: flex;
     gap: 1rem;
     margin-top: 1rem;
+    align-items: center;
+}
+
+.form-row > * {
+    flex: 1;
+    min-width: 0;
 }
 
 .file-upload-wrapper {
@@ -317,19 +380,18 @@ button[type="button"]:active {
     gap: 0.5rem;
     width: 100%;
     padding: 0.75rem 1.25rem;
-    background-color: var(--bg-color);
+    background-color: white;
     color: var(--secondary-color);
     border: 1px dashed var(--secondary-color);
     border-radius: 8px;
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
-    box-sizing: border-box;
     transition: all 0.2s ease;
 }
 
 .btn-file-custom:hover {
-    background-color: var(--bg-color);
+    background-color: #e0f7fa;
     border-color: var(--accent-color-1);
     color: var(--accent-color-1);
 }
@@ -338,11 +400,16 @@ button[type="button"]:active {
     transform: translateY(1px);
 }
 
+/* Document Search */
+
 .search-box input {
+    width: 100%;
     font-size: 1rem;
     padding: 0.85rem;
     margin-bottom: 1.5rem;
 }
+
+/* Document List */
 
 .doc-grid {
     display: flex;
@@ -354,16 +421,18 @@ button[type="button"]:active {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
     padding: 1rem;
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    background: var(--bg-color);
+    background: white;
 }
 
 .doc-header {
     display: flex;
     align-items: center;
     gap: 1rem;
+    min-width: 0;
 }
 
 .doc-icon {
@@ -373,38 +442,110 @@ button[type="button"]:active {
 .doc-title {
     margin: 0;
     font-size: 1rem;
+    overflow-wrap: anywhere;
 }
 
 .doc-date {
     font-size: 0.8rem;
     color: var(--text-color-secondary);
+    overflow-wrap: anywhere;
 }
 
-/* Tags */
+/* Document Tags */
+
 .tag {
+    display: inline-block;
     padding: 0.25rem 0.75rem;
     border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 600;
+    white-space: nowrap;
 }
 
-/* --- Footer --- */
+.tag-genetics {
+    background: var(--tag-genetics-bg);
+    color: var(--tag-genetics-text);
+}
+
+.tag-bloodwork {
+    background: var(--tag-bloodwork-bg);
+    color: var(--tag-bloodwork-text);
+}
+
+.tag-cardiology {
+    background: var(--tag-cardiology-bg);
+    color: var(--tag-cardiology-text);
+}
+
+.tag-prescription {
+    background: var(--tag-prescription-bg);
+    color: var(--tag-prescription-text);
+}
+
+.tag-generalreport {
+    background: var(--tag-generalreport-bg);
+    color: var(--tag-generalreport-text);
+}
+
+/* Footer */
+
 footer {
     text-align: center;
-    padding: 1.5rem;
+    padding: 1.25rem;
     background-color: var(--bg-color);
     border-top: 1px solid var(--border-color);
     color: var(--main-color);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     margin-top: auto;
 }
 
-.tag-genetics { background: var(--tag-genetics-bg); color: var(--tag-genetics-text); }
-.tag-bloodwork { background: var(--tag-bloodwork-bg); color: var(--tag-bloodwork-text); }
-.tag-cardiology { background: var(--tag-cardiology-bg); color: var(--tag-cardiology-text); }
-.tag-prescription { background: var(--tag-prescription-bg); color: var(--tag-prescription-text); }
-.tag-generalreport { background: var(--tag-generalreport-bg); color: var(--tag-generalreport-text); }
+/* Responsive */
 
-.hidden {
-    display: none !important;
+@media screen and (min-width: 768px) {
+    main {
+        width: 85%;
+        max-width: 850px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .navbar {
+        padding: 1rem;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .nav-links {
+        justify-content: center;
+        gap: 0.75rem 1rem;
+    }
+
+    main {
+        width: 94%;
+        margin: 1rem auto;
+    }
+
+    .card,
+    .hero-card,
+    #testPage > div:first-child,
+    #resultsCard {
+        padding: 1.5rem;
+    }
+
+    .form-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .doc-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .tag {
+        align-self: flex-start;
+    }
 }

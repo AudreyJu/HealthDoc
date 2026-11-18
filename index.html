@@ -1,232 +1,421 @@
 <!DOCTYPE html>
+
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>HealthDoc</title>
-        <!-- Google font : Montserrat -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-        <!-- Link to external CSS file -->
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <!-- Header & Navigation Menu -->
-        <header class="navbar">
-            <div class="nav-container">
-                <h1 class="logo">HealthDoc</h1>
-                <nav>
-                    <ul class="nav-links">
-                        <li><a href="#" onclick="showPage('homePage')">Home</a></li>
-                        <li><a href="#" onclick="showPage('testPage')">Prevention Test</a></li>
-                        <li><a href="#" onclick="showPage('statsPage')">Results</a></li>
-                        <li><a href="#" onclick="showPage('consentPage')">Data Consent</a></li>
-                        <li><a href="#" onclick="showPage('documentsPage')">My Documents</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </header>
 
-         <!-- Main content -->
-        <main class="main-content">
-            <!-- PAGE 1: HOME PAGE -->
-            <section id="homePage" class="page-section">
-                <div class="hero-card">
-                    <h2>Welcome to HealthDoc</h2>
-                    <p class="tagline">Prevent medical conditions before they start by aligning your genetics, environment, and lifestyle choices.</p>
-                    
-                    <div class="mission-box">
-                        <h3>Our Mission</h3>
-                        <p>HealthDoc shifts medicine from reactive treatment to proactive prevention. By evaluating how your living conditions, daily nutrition, physical activity, and family history intersect, we provide personalized countermeasures to protect your long-term health.</p>
-                    </div>
+    <head>
 
-                    <button type="button" class="btn-primary" onclick="showPage('testPage')">Start Prevention Assessment &rarr;</button>
-                </div>
-            </section>
+        <meta charset="UTF-8">
 
-            <!-- PAGE 2: PREVENTION TEST -->
-            <section id="testPage" class="page-section hidden">
-                <div>
-                    <h2>Personalized Prevention Portal</h2>
-                    <p>Input your genetic history, living environment, and daily nutrition to receive customized medical and lifestyle countermeasures tailored to prevent predicted health conditions.</p>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-                    <form id="healthForm">
-                        <!-- Genetic -->
-                        <div>
-                            <label>1. Genetic Predispositions / Family History</label>
-                                <div>
-                                    <label>
-                                        <input type="checkbox" name="genetics" value="Diabetes">
-                                        <span>Type 2 Diabetes</span>
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="genetics" value="Hypertension">
-                                        <span>Hypertension</span>
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="genetics" value="Cardiovascular">
-                                        <span>Cardiovascular Disease</span>
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="genetics" value="Lactose">
-                                        <span>Lactose Intolerance / GI Sensitivity</span>
-                                    </label>
-                                </div>
-                        </div>
+        <title>HealthDoc</title>
 
-                        <!-- Environment -->
-                        <div>
-                            <label>2. Living Environment</label>
-                            <select id="environment">
-                                <option value="Urban">Urban Area (High Pollution / Traffic Exposure)</option>
-                                <option value="Suburban">Suburban Area (Moderate Air Quality)</option>
-                                <option value="Rural">Rural Area (Clean Air / Low Pollution)</option>
-                            </select>
-                        </div>
+        <!-- Google font : Montserrat -->
 
-                        <!-- Nutrition -->
-                        <div>
-                                <label>3. Primary Dietary Pattern</label>
-                                <select id="nutrition">
-                                    <option value="Processed">High Sugar / High Processed Foods</option>
-                                    <option value="Standard">Standard Mixed Diet</option>
-                                    <option value="Mediterranean">Mediterranean / Whole Foods Diet</option>
-                                    <option value="PlantBased">Plant-Based / High Fiber</option>
-                                </select>
-                        </div>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
 
-                        <!-- Age -->
-                            <div>
-                                <label>4. Age</label>
-                                <input type="number" id="age" min="1" max="120" placeholder="Enter your age">
-                            </div>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-                            <!-- Smoking -->
-                            <div>
-                                <label>5. Do you smoke?</label>
-                                <select id="smoking">
-                                    <option value="No">No</option>
-                                    <option value="Occasionally">Occasionally</option>
-                                    <option value="Regularly">Regularly</option>
-                                </select>
-                            </div>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-                            <!-- Physical activity -->
-                            <div>
-                                <label>6. Physical Activity</label>
-                                <select id="activity">
-                                    <option value="Low">Low (less than 1 hour per week)</option>
-                                    <option value="Moderate">Moderate (1 to 3 hours per week)</option>
-                                    <option value="High">High (more than 3 hours per week)</option>
-                                </select>
-                            </div>
+        <!-- Link to external CSS file -->
 
-                        <button type="button" onclick="calculateRisk()">Generate prevention plan</button>
-                    </form>
-                </div>
+        <link rel="stylesheet" href="style.css">
 
-                <!-- Results Section (Hidden by default) -->
-                <div id="resultsCard" class="hidden">
-                    <div>
-                        <h3>Your Personalized Prevention Dashboard</h3>
-                        <span id="riskBadge"></span>
-                    </div>
+    </head>
 
-                    <div id="recommendationsList">
-                        <!-- Recommendations inserted via JS -->
-                    </div>
-                </div>
-            </section>
+    <body>
 
-            <!-- PAGE 4: MEDICAL DATA CONSENT FORM -->
-            <section id="consentPage" class="page-section hidden">
-                <div class="card">
-                    <h2>Medical Data Sharing Consent</h2>
-                    <p>Manage who can access your genetics, environmental reports, and prevention plans.</p>
+        <!-- Header & Navigation Menu -->
 
-                    <form id="consentForm" onsubmit="saveConsent(event)">
-                        <div class="form-group">
-                            <label>1. Sharing Permission</label>
-                            <label class="radio-label">
-                                <input type="checkbox" id="consentGeneral" required>
-                                <span>I authorize HealthDoc to store and share my health profile with designated parties for preventive care.</span>
-                            </label>
-                        </div>
+        <header class="navbar">
 
-                        <div class="form-group">
-                            <label>2. Authorized Entities (Who is allowed to view your data?)</label>
-                            <div class="checkbox-group">
-                                <label><input type="checkbox" name="authorized" value="Primary Care Physician"> <span>Primary Care Physician</span></label>
-                                <label><input type="checkbox" name="authorized" value="Genetics Specialist"> <span>Genetics Specialist</span></label>
-                                <label><input type="checkbox" name="authorized" value="Hospital Cardiology Department"> <span>Hospital Cardiology Department</span></label>
-                                <label><input type="checkbox" name="authorized" value="Certified Nutritionist"> <span>Certified Nutritionist</span></label>
-                                <label><input type="checkbox" name="authorized" value="Medical Researchers (Anonymized)"> <span>Medical Researchers (Anonymized Data Only)</span></label>
-                            </div>
-                        </div>
+            <div class="nav-container">
 
-                        <div class="form-group">
-                            <label>3. Add Specific Provider Email / ID (Optional)</label>
-                            <input type="text" id="specificDoctor" placeholder="e.g., dr.smith@cityhospital.org">
-                        </div>
+                <h1 class="logo">HealthDoc</h1>
 
-                        <button type="submit" class="btn-primary">Save Consent Preferences</button>
-                    </form>
+                <nav>
 
-                    <div id="consentStatus" class="status-msg hidden"></div>
-                </div>
-            </section>
+                    <ul class="nav-links">
 
-            <!-- PAGE 5: MY DOCUMENTS SPACE -->
-            <section id="documentsPage" class="page-section hidden">
-                <div class="card">
-                    <h2>My Medical Documents</h2>
-                    <p>Upload, tag, and search your medical records, blood tests, and genetic reports.</p>
+                        <li><a href="#" onclick="showPage('homePage')">Home</a></li>
 
-                    <!-- Document Upload Form -->
-                    <form id="docForm" onsubmit="addDocument(event)" class="upload-box">
-                        <h3>Add New Document</h3>
-                        <div class="form-row">
-                            <input type="text" id="docName" placeholder="Document Name (e.g., Blood Test 2026)" required>
-                            <select id="docLabel" required>
-                                <option value="">Select Label/Category</option>
-                                <option value="Genetics">Genetics</option>
-                                <option value="Blood Work">Blood Work</option>
-                                <option value="Cardiology">Cardiology</option>
-                                <option value="Prescription">Prescription</option>
-                                <option value="General Report">General Report</option>
-                            </select>
-                        </div>
-                        <div class="form-row">
-                            <div class="file-upload-wrapper">
-                                <input type="file" id="docFile" onchange="updateFileLabel()" required hidden>
-                                <label for="docFile" class="btn-file-custom">
-                                    <span id="fileBtnText">Choose a Document</span>
-                                </label>
-                            </div>
-                            <button type="submit" class="btn-primary">Upload Document</button>
-                        </div>
-                    </form>
+                        <li><a href="#" onclick="showPage('testPage')">Prevention Test</a></li>
 
-                    <!-- Search Bar -->
-                    <div class="search-box">
-                        <input type="text" id="docSearch" onkeyup="filterDocuments()" placeholder="Search documents by name or category...">
-                    </div>
+                        <li><a href="#" onclick="showPage('statsPage')">Results</a></li>
 
-                    <!-- Document List -->
-                    <div id="documentList" class="doc-grid">
-                        <!-- Documents dynamically injected here -->
-                    </div>
-                </div>
-            </section>
-        </main>
+                        <li><a href="#" onclick="showPage('consentPage')">Data Consent</a></li>
 
-        <!-- Footer -->
-        <footer>
-            <p>HealthDoc - Built for Preventive Health Research</p>
-        </footer>
-        
-        <!-- Link to the JavaScript file -->
-        <script src="script.js"></script>
-    </body>
+                        <li><a href="#" onclick="showPage('documentsPage')">My Documents</a></li>
+
+                    </ul>
+
+                </nav>
+
+            </div>
+
+        </header>
+
+         <!-- Main content -->
+
+        <main class="main-content">
+
+            <!-- PAGE 1: HOME PAGE -->
+
+            <section id="homePage" class="page-section">
+
+                <div class="hero-card">
+
+                    <h2>Welcome to HealthDoc</h2>
+
+                    <p class="tagline">Prevent medical conditions before they start by aligning your genetics, environment, and lifestyle choices.</p>
+
+                    <div class="mission-box">
+
+                        <h3>Our Mission</h3>
+
+                        <p>HealthDoc shifts medicine from reactive treatment to proactive prevention. By evaluating how your living conditions, daily nutrition, physical activity, and family history intersect, we provide personalized countermeasures to protect your long-term health.</p>
+
+                    </div>
+
+                    <button type="button" class="btn-primary" onclick="showPage('testPage')">Start Prevention Assessment &rarr;</button>
+
+                </div>
+
+            </section>
+
+            <!-- PAGE 2: PREVENTION TEST -->
+
+            <section id="testPage" class="page-section hidden">
+
+                <div>
+
+                    <h2>Personalized Prevention Portal</h2>
+
+                    <p>Input your genetic history, living environment, and daily nutrition to receive customized medical and lifestyle countermeasures tailored to prevent predicted health conditions.</p>
+
+                    <form id="healthForm">
+
+                        <!-- Genetic -->
+
+                        <div>
+
+                            <label>1. Genetic Predispositions / Family History</label>
+
+                                <div>
+
+                                    <label>
+
+                                        <input type="checkbox" name="genetics" value="Diabetes">
+
+                                        <span>Type 2 Diabetes</span>
+
+                                    </label>
+
+                                    <label>
+
+                                        <input type="checkbox" name="genetics" value="Hypertension">
+
+                                        <span>Hypertension</span>
+
+                                    </label>
+
+                                    <label>
+
+                                        <input type="checkbox" name="genetics" value="Cardiovascular">
+
+                                        <span>Cardiovascular Disease</span>
+
+                                    </label>
+
+                                    <label>
+
+                                        <input type="checkbox" name="genetics" value="Lactose">
+
+                                        <span>Lactose Intolerance / GI Sensitivity</span>
+
+                                    </label>
+
+                                </div>
+
+                        </div>
+
+                        <!-- Environment -->
+
+                        <div>
+
+                            <label>2. Living Environment</label>
+
+                            <select id="environment">
+
+                                <option value="Urban">Urban Area (High Pollution / Traffic Exposure)</option>
+
+                                <option value="Suburban">Suburban Area (Moderate Air Quality)</option>
+
+                                <option value="Rural">Rural Area (Clean Air / Low Pollution)</option>
+
+                            </select>
+
+                        </div>
+
+                        <!-- Nutrition -->
+
+                        <div>
+
+                                <label>3. Primary Dietary Pattern</label>
+
+                                <select id="nutrition">
+
+                                    <option value="Processed">High Sugar / High Processed Foods</option>
+
+                                    <option value="Standard">Standard Mixed Diet</option>
+
+                                    <option value="Mediterranean">Mediterranean / Whole Foods Diet</option>
+
+                                    <option value="PlantBased">Plant-Based / High Fiber</option>
+
+                                </select>
+
+                        </div>
+
+                        <!-- Age -->
+
+                            <div>
+
+                                <label>4. Age</label>
+
+                                <input type="number" id="age" min="1" max="120" placeholder="Enter your age">
+
+                            </div>
+
+                            <!-- Smoking -->
+
+                            <div>
+
+                                <label>5. Do you smoke?</label>
+
+                                <select id="smoking">
+
+                                    <option value="No">No</option>
+
+                                    <option value="Occasionally">Occasionally</option>
+
+                                    <option value="Regularly">Regularly</option>
+
+                                </select>
+
+                            </div>
+
+                            <!-- Physical activity -->
+
+                            <div>
+
+                                <label>6. Physical Activity</label>
+
+                                <select id="activity">
+
+                                    <option value="Low">Low (less than 1 hour per week)</option>
+
+                                    <option value="Moderate">Moderate (1 to 3 hours per week)</option>
+
+                                    <option value="High">High (more than 3 hours per week)</option>
+
+                                </select>
+
+                            </div>
+
+                        <div class="date-field-container">
+    <label for="assessmentDate">7. Assessment Date</label>
+    <input type="date" id="assessmentDate">
+</div>
+
+<button type="button" onclick="calculateRisk()">Generate prevention plan</button>
+
+                    </form>
+
+                </div>
+
+                <!-- Results Section (Hidden by default) -->
+
+                <div id="resultsCard" class="hidden">
+
+                    <div>
+
+                        <h3>Your Personalized Prevention Dashboard</h3>
+
+                        <span id="riskBadge"></span>
+
+                    </div>
+
+                    <div id="recommendationsList">
+
+                        <!-- Recommendations inserted via JS -->
+
+                    </div>
+<a href="stats.html" class="nav-stats-btn">See my statistics</a>
+
+                </div>
+
+            </section>
+
+            <!-- PAGE 4: MEDICAL DATA CONSENT FORM -->
+
+            <section id="consentPage" class="page-section hidden">
+
+                <div class="card">
+
+                    <h2>Medical Data Sharing Consent</h2>
+
+                    <p>Manage who can access your genetics, environmental reports, and prevention plans.</p>
+
+                    <form id="consentForm" onsubmit="saveConsent(event)">
+
+                        <div class="form-group">
+
+                            <label>1. Sharing Permission</label>
+
+                            <label class="radio-label">
+
+                                <input type="checkbox" id="consentGeneral" required>
+
+                                <span>I authorize HealthDoc to store and share my health profile with designated parties for preventive care.</span>
+
+                            </label>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>2. Authorized Entities (Who is allowed to view your data?)</label>
+
+                            <div class="checkbox-group">
+
+                                <label><input type="checkbox" name="authorized" value="Primary Care Physician"> <span>Primary Care Physician</span></label>
+
+                                <label><input type="checkbox" name="authorized" value="Genetics Specialist"> <span>Genetics Specialist</span></label>
+
+                                <label><input type="checkbox" name="authorized" value="Hospital Cardiology Department"> <span>Hospital Cardiology Department</span></label>
+
+                                <label><input type="checkbox" name="authorized" value="Certified Nutritionist"> <span>Certified Nutritionist</span></label>
+
+                                <label><input type="checkbox" name="authorized" value="Medical Researchers (Anonymized)"> <span>Medical Researchers (Anonymized Data Only)</span></label>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>3. Add Specific Provider Email / ID (Optional)</label>
+
+                            <input type="text" id="specificDoctor" placeholder="e.g., dr.smith@cityhospital.org">
+
+                        </div>
+
+                        <button type="submit" class="btn-primary">Save Consent Preferences</button>
+
+                    </form>
+
+                    <div id="consentStatus" class="status-msg hidden"></div>
+
+                </div>
+
+            </section>
+
+            <!-- PAGE 5: MY DOCUMENTS SPACE -->
+
+            <section id="documentsPage" class="page-section hidden">
+
+                <div class="card">
+
+                    <h2>My Medical Documents</h2>
+
+                    <p>Upload, tag, and search your medical records, blood tests, and genetic reports.</p>
+
+                    <!-- Document Upload Form -->
+
+                    <form id="docForm" onsubmit="addDocument(event)" class="upload-box">
+
+                        <h3>Add New Document</h3>
+
+                        <div class="form-row">
+
+                            <input type="text" id="docName" placeholder="Document Name (e.g., Blood Test 2026)" required>
+
+                            <select id="docLabel" required>
+
+                                <option value="">Select Label/Category</option>
+
+                                <option value="Genetics">Genetics</option>
+
+                                <option value="Blood Work">Blood Work</option>
+
+                                <option value="Cardiology">Cardiology</option>
+
+                                <option value="Prescription">Prescription</option>
+
+                                <option value="General Report">General Report</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-row">
+
+                            <div class="file-upload-wrapper">
+
+                                <input type="file" id="docFile" onchange="updateFileLabel()" required hidden>
+
+                                <label for="docFile" class="btn-file-custom">
+
+                                    <span id="fileBtnText">Choose a Document</span>
+
+                                </label>
+
+                            </div>
+
+                            <button type="submit" class="btn-primary">Upload Document</button>
+
+                        </div>
+
+                    </form>
+
+                    <!-- Search Bar -->
+
+                    <div class="search-box">
+
+                        <input type="text" id="docSearch" onkeyup="filterDocuments()" placeholder="Search documents by name or category...">
+
+                    </div>
+
+<!-- Document List -->
+
+                    <div id="documentList" class="doc-grid">
+
+                        <!-- Documents dynamically injected here -->
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+        </main>
+
+<!-- Footer -->
+
+        <footer>
+
+
+            <p>HealthDoc - Built for Preventive Health Research</p>
+
+        </footer>
+
+        <!-- Link to the JavaScript file -->
+
+        <script src="script.js"></script>
+
+    </body>
+
 </html>
